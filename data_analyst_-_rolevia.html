@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analyst - ROLEViA</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+body {
+            font-family: 'Inter', sans-serif;
+            background-color: #151B54;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+/* Navbar */
+        .navbar {
+            background-color: #1a2055;
+            border-bottom: 1px solid #39427A;
+            padding: 1rem 2rem;
+        }
+
+.navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+.logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #5B9DFF;
+        }
+
+.nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+.nav-links a {
+            color: #B8C4E8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+.nav-links a:hover {
+            color: #FFFFFF;
+        }
+
+.profile-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5B9DFF, #4DE1E1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+/* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+/* Breadcrumb */
+        .breadcrumb {
+            color: #B8C4E8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+.breadcrumb span {
+            color: #5B9DFF;
+        }
+
+/* Header Section */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+.header-left {
+            flex: 1;
+        }
+
+.badge {
+            display: inline-block;
+            background-color: rgba(91, 157, 255, 0.15);
+            color: #5B9DFF;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(91, 157, 255, 0.3);
+        }
+
+.main-heading {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            color: #FFFFFF;
+        }
+
+.subtitle {
+            color: #B8C4E8;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+.btn-primary {
+            background: linear-gradient(135deg, #5B9DFF, #4DE1E1);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(91, 157, 255, 0.3);
+        }
+
+.btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 157, 255, 0.4);
+        }
+
+/* Overview Cards */
+        .overview-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+.stat-card {
+            background-color: #20275F;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #39427A;
+            text-align: center;
+        }
+
+.stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #5B9DFF;
+            margin-bottom: 0.5rem;
+        }
+
+.stat-label {
+            color: #B8C4E8;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+/* Visualization Section */
+        .viz-section {
+            background-color: #20275F;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid #39427A;
+            margin-bottom: 2rem;
+        }
+
+.section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #FFFFFF;
+        }
+
+.chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 2rem;
+        }
+
+.chart-legend {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+.legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+.legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+.legend-dot.importance {
+            background-color: #5B9DFF;
+        }
+
+.legend-dot.required {
+            background-color: #4DE1E1;
+        }
+
+/* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+.radar-container {
+            position: relative;
+            height: 350px;
+        }
+
+/* Insights Panel */
+        .insights-panel {
+            background-color: #20275F;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid #39427A;
+            margin-bottom: 3rem;
+        }
+
+.insight-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            color: #B8C4E8;
+            line-height: 1.6;
+        }
+
+.insight-item:last-child {
+            margin-bottom: 0;
+        }
+
+.insight-bullet {
+            color: #5B9DFF;
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+/* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(91, 157, 255, 0.1), rgba(77, 225, 225, 0.1));
+            border: 1px solid #39427A;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+.cta-heading {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+.cta-text {
+            color: #B8C4E8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+@media (max-width: 768px) {
+            .overview-cards,
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+.header-section {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+.main-heading {
+                font-size: 2rem;
+            }
+
+.nav-links {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">ROLEViA</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+            <div class="profile-icon">U</div>
+        </div>
+    </nav>
+
+<!-- Main Content -->
+    <div class="container">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <span>Careers</span> / Data Analyst
+        </div>
+
+<!-- Header Section -->
+        <div class="header-section">
+            <div class="header-left">
+                <div class="badge">Career Role</div>
+                <h1 class="main-heading">Data Analyst</h1>
+                <p class="subtitle">Turn data into meaningful insights and support better decisions.</p>
+            </div>
+            <button class="btn-primary">Assess My Skills →</button>
+        </div>
+
+<!-- Overview Cards -->
+        <div class="overview-cards">
+            <div class="stat-card">
+                <div class="stat-value">09</div>
+                <div class="stat-label">Core Skills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">06</div>
+                <div class="stat-label">Technical Skills</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Professional</div>
+                <div class="stat-label">Career Level</div>
+            </div>
+        </div>
+
+<!-- Main Visualization -->
+        <div class="viz-section">
+            <h2 class="section-title">Skill Requirements Overview</h2>
+            <div class="chart-container">
+                <canvas id="skillChart"></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-dot importance"></div>
+                    <span>Importance</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot required"></div>
+                    <span>Required Level</span>
+                </div>
+            </div>
+        </div>
+
+<!-- Two Column: Radar Chart & Insights -->
+        <div class="two-column">
+            <div class="viz-section">
+                <h2 class="section-title">Skill Profile</h2>
+                <div class="radar-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+
+<div class="insights-panel">
+                <h2 class="section-title">Key Skill Insights</h2>
+                <div class="insight-item">
+                    <span class="insight-bullet">•</span>
+                    <span>SQL has the highest importance for this role.</span>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-bullet">•</span>
+                    <span>Python and Statistics require strong proficiency.</span>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-bullet">•</span>
+                    <span>Communication has a lower technical requirement but remains relevant.</span>
+                </div>
+            </div>
+        </div>
+
+<!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-heading">Ready to discover your skill gap?</h2>
+            <p class="cta-text">Assess your current skills and see how prepared you are for this career.</p>
+            <button class="btn-primary">Start Skill Assessment →</button>
+        </div>
+    </div>
+
+<script>
+        // Horizontal Grouped Bar Chart
+        const ctx = document.getElementById('skillChart').getContext('2d');
+        const skillChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['SQL', 'Python', 'Statistics', 'Data Visualization', 'Excel', 'Communication'],
+                datasets: [{
+                    label: 'Importance',
+                    data: [90, 80, 80, 70, 75, 60],
+                    backgroundColor: '#5B9DFF',
+                    borderRadius: 8,
+                    barThickness: 18
+                }, {
+                    label: 'Required Level',
+                    data: [80, 70, 80, 70, 65, 60],
+                    backgroundColor: '#4DE1E1',
+                    borderRadius: 8,
+                    barThickness: 18
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.x + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: {
+                            color: 'rgba(57, 66, 122, 0.3)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#B8C4E8',
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 13,
+                                weight: '500'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+// Radar Chart
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        const radarChart = new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['SQL', 'Python', 'Statistics', 'Data Visualization', 'Excel', 'Communication'],
+                datasets: [{
+                    label: 'Required Proficiency',
+                    data: [80, 70, 80, 70, 65, 60],
+                    backgroundColor: 'rgba(91, 157, 255, 0.2)',
+                    borderColor: '#5B9DFF',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4DE1E1',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#4DE1E1',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            color: '#B8C4E8',
+                            backdropColor: 'transparent'
+                        },
+                        grid: {
+                            color: 'rgba(57, 66, 122, 0.5)'
+                        },
+                        pointLabels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
