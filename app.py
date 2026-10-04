@@ -7,8 +7,8 @@ st.title("ROLEViA 🚀")
 menu = st.sidebar.radio("Navigate", ["Home", "Career Explorer", "Skill Explorer"])
 
 # Load datasets
-content = pd.read_csv("data/content_model_refrence.csv")
-skills = pd.read_csv("data/essential_skills.csv")
+content = pd.read_csv("content_model_refrence.csv")
+skills = pd.read_csv("essential_skills.csv")
 
 # Pages
 if menu == "Home":
